@@ -2,10 +2,10 @@ from pyimgurapi.base_endpoint import BaseEndpoint
 
 
 class Account(BaseEndpoint):
-
-    def generate_access_token(self, refresh_token=None, client_id=None,
-                              client_secret=None):
-        url_path = '/oauth2/token'
+    def generate_access_token(
+        self, refresh_token=None, client_id=None, client_secret=None
+    ):
+        url_path = "/oauth2/token"
         data = dict()
         if refresh_token:
             data.update(refresh_token=refresh_token)
