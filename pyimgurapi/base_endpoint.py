@@ -14,20 +14,21 @@ class BaseEndpoint:
 
         request_object_params = dict()
         request_object_params.update(url=url)
-        if data is not None:
+        if isinstance(data, dict):
             try:
                 serialized_data = json.dumps(data).encode("utf-8")
             except TypeError:
                 logger.error("")
                 raise
             request_object_params.update(data=serialized_data)
+        elif isinstance(data, bytes):
+            request_object_params.update(data=data)
 
         request = urllib.request.Request(**request_object_params)
 
         if isinstance(headers, dict):
             for header, value in headers.items():
                 request.add_header(header, value)
-        request.add_header("Content-Type", "application/json")
 
         response = urllib.request.urlopen(request)
         raw_response_data = response.read()
