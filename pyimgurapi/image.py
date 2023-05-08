@@ -27,3 +27,6 @@ class Image(BaseEndpoint):
         }
 
         return self.make_request(url_path, data=data, headers=headers)
+
+    def __call__(self, image_hash, access_token):
+        return self.get_image(image_hash, access_token=access_token)
