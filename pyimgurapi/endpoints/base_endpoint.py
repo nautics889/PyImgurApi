@@ -26,6 +26,12 @@ class BaseEndpoint:
             request_object_params.update(data=serialized_data)
         elif isinstance(data, bytes):
             request_object_params.update(data=data)
+        elif data is not None:
+            raise TypeError(
+                f"Invalid type of `data` parameter: "
+                f"{data.__class__.__module__}.{data.__class__.__name__}; "
+                f"Expected bytes or dict."
+            )
 
         request = urllib.request.Request(**request_object_params)
 
