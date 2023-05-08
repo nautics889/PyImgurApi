@@ -1,4 +1,4 @@
-from pyimgurapi.base_endpoint import BaseEndpoint
+from .base_endpoint import BaseEndpoint
 
 
 class Account(BaseEndpoint):

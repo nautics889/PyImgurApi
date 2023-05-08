@@ -1,5 +1,4 @@
-from pyimgurapi.account import Account
-from pyimgurapi.image import Image
+from .endpoints import Account, Album, Comment, Feed, Gallery, Image
 
 
 class ImgurAPI:
@@ -9,8 +8,14 @@ class ImgurAPI:
         self.client_secret = client_secret
         self.access_token = None
 
-        self.account = Account()
-        self.image = Image()
+        self.endpoints = dict(
+            account=Account(),
+            album=Album(),
+            comment=Comment(),
+            feed=Feed(),
+            gallery=Gallery(),
+            image=Image(),
+        )
 
     def auth(self):
         auth_response_data = self.account.generate_access_token(
@@ -18,5 +23,15 @@ class ImgurAPI:
             client_id=self.client_id,
             client_secret=self.client_secret,
         )
-        self.access_token = auth_response_data.get("access_token")
+        token = auth_response_data.get("access_token")
+        self.access_token = token
+        for endpoint in self.endpoints:
+            self.endpoints[endpoint].access_token = token
         return auth_response_data
+
+    def __getattr__(self, item):
+        if item in self.endpoints:
+            return self.endpoints[item]
+        raise NotImplementedError(
+            f"Endpoint {item} is not supported or is not implemented yet."
+        )
