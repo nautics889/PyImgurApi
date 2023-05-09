@@ -12,7 +12,7 @@ class BaseEndpoint:
     def __init__(self, access_token=None):
         self.access_token = access_token
 
-    def make_request(self, url_path, data=None, headers=None):
+    def make_request(self, url_path, data=None, headers=None, method="GET"):
         url = urljoin(self.base_url, url_path)
 
         request_object_params = dict()
@@ -32,6 +32,7 @@ class BaseEndpoint:
                 f"{data.__class__.__module__}.{data.__class__.__name__}; "
                 f"Expected bytes or dict."
             )
+        request_object_params.update(method=method)
 
         request = urllib.request.Request(**request_object_params)
 

@@ -16,4 +16,6 @@ class Account(BaseEndpoint):
 
         headers = {"Content-Type": "application/json"}
 
-        return self.make_request(url_path, data=data, headers=headers)
+        return self.make_request(
+            url_path, data=data, headers=headers, method="POST"
+        )
