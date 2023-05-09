@@ -1,5 +1,5 @@
 from .base_endpoint import BaseEndpoint
-from ..utils import FileForm
+from ..utils import MultipartForm, File, Field
 
 
 class Image(BaseEndpoint):
@@ -13,10 +13,22 @@ class Image(BaseEndpoint):
 
         return self.make_request(url_path, headers=headers)
 
-    def upload(self, file, filename):
+    def upload(self, file_obj, filename, **kwargs):
         url_path = "/3/upload"
 
-        file_form = FileForm(filelike_object=file, filename=filename)
+        fields = [
+            Field(field_name=field_name, value=str(kwargs.get(field_name)))
+            for field_name in ("title", "description", "album")
+            if kwargs.get(field_name) is not None
+        ]
+        file_data = file_obj.read()
+        file = File(name=filename, data=file_data, field_name="image")
+        file_form = MultipartForm(
+            fields=fields,
+            files=[
+                file,
+            ],
+        )
 
         data = bytes(file_form)
 

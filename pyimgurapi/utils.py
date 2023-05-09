@@ -3,16 +3,28 @@ import mimetypes
 import uuid
 
 
-class FileForm:
-    def __init__(self, filelike_object, filename=None, fieldname="image"):
+# @TODO: consider dataclasses
+class Field:
+    def __init__(self, field_name, value):
+        self.field_name = field_name
+        self.value = value
+
+
+class File:
+    def __init__(self, name, data, field_name):
+        self.name = name
+        self.data = data
+        self.field_name = field_name
+        self.mimetype = (
+            mimetypes.guess_type(name)[0] or "application/octet-stream"
+        )
+
+
+class MultipartForm:
+    def __init__(self, fields=None, files=None):
         self.boundary = uuid.uuid4().hex
-        self.file_data = filelike_object.read()
-        self.filename = filename
-        if filename:
-            self.mimetype = (
-                mimetypes.guess_type(filename)[0] or "application/octet-stream"
-            )
-        self.fieldname = fieldname
+        self.fields = fields or []
+        self.files = files or []
 
     def __bytes__(self):
         buffer = io.BytesIO()
@@ -21,17 +33,26 @@ class FileForm:
             (b"--", self.boundary.encode("utf-8"), b"\r\n")
         )
 
-        buffer.write(boundary_bytes)
-        buffer.write("Content-Disposition: form-data; ".encode("utf-8"))
-        buffer.write(
-            f'name="{self.fieldname}"; filename="{self.filename}"\r\n'.encode(
-                "utf-8"
+        for field in self.fields:
+            buffer.write(boundary_bytes)
+            buffer.write("Content-Disposition: form-data; ".encode("utf-8"))
+            buffer.write(f'name="{field.field_name}"\r\n'.encode("utf-8"))
+            buffer.write(b"\r\n")
+            buffer.write(field.value.encode("utf-8"))
+            buffer.write(b"\r\n")
+
+        for file in self.files:
+            buffer.write(boundary_bytes)
+            buffer.write("Content-Disposition: form-data; ".encode("utf-8"))
+            buffer.write(
+                f'name="{file.field_name}"; filename="{file.name}"\r\n'.encode(
+                    "utf-8"
+                )
             )
-        )
-        buffer.write(b"\r\n")
-        buffer.write(self.file_data)
-        buffer.write(b"\r\n")
-        buffer.write(boundary_bytes)
+            buffer.write(b"\r\n")
+            buffer.write(file.data)
+            buffer.write(b"\r\n")
+            buffer.write(boundary_bytes)
 
         return buffer.getvalue()
 
