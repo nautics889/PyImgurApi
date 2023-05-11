@@ -9,8 +9,14 @@ logger = logging.getLogger(__name__)
 class BaseEndpoint:
     base_url = "https://api.imgur.com/"
 
-    def __init__(self, access_token=None):
+    def __init__(self, client_id=None, access_token=None):
+        self.client_id = client_id
         self.access_token = access_token
+
+    def get_auth_header(self):
+        if self.access_token:
+            return {"Authorization": f"Bearer {self.access_token}"}
+        return {"Authorization": f"Client-ID {self.access_token}"}
 
     def make_request(self, url_path, data=None, headers=None, method="GET"):
         url = urljoin(self.base_url, url_path)

@@ -7,9 +7,9 @@ class Image(BaseEndpoint):
         url_path = f"/3/image/{image_hash}"
 
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",
         }
+        headers.update(**self.get_auth_header())
 
         return self.make_request(url_path, headers=headers)
 
@@ -33,10 +33,10 @@ class Image(BaseEndpoint):
         data = bytes(file_form)
 
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": file_form.get_content_type(),
             "Content-length": str(len(data)),
         }
+        headers.update(**self.get_auth_header())
 
         return self.make_request(
             url_path, data=data, headers=headers, method="POST"
@@ -46,9 +46,9 @@ class Image(BaseEndpoint):
         url_path = f"/3/image/{image_hash}"
 
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",
         }
+        headers.update(**self.get_auth_header())
 
         return self.make_request(url_path, headers=headers, method="DELETE")
 
@@ -65,9 +65,9 @@ class Image(BaseEndpoint):
         data = bytes(file_form)
 
         headers = {
-            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",
         }
+        headers.update(**self.get_auth_header())
 
         return self.make_request(
             url_path, data=data, headers=headers, method="POST"

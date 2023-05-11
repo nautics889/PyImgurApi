@@ -9,12 +9,12 @@ class ImgurAPI:
         self.access_token = None
 
         self.endpoints = dict(
-            account=Account(),
-            album=Album(),
-            comment=Comment(),
-            feed=Feed(),
-            gallery=Gallery(),
-            image=Image(),
+            account=Account,
+            album=Album,
+            comment=Comment,
+            feed=Feed,
+            gallery=Gallery,
+            image=Image,
         )
 
     def auth(self):
@@ -25,13 +25,13 @@ class ImgurAPI:
         )
         token = auth_response_data.get("access_token")
         self.access_token = token
-        for endpoint in self.endpoints:
-            self.endpoints[endpoint].access_token = token
         return auth_response_data
 
     def __getattr__(self, item):
         if item in self.endpoints:
-            return self.endpoints[item]
+            return self.endpoints[item](
+                client_id=self.client_id, access_token=self.access_token
+            )
         raise NotImplementedError(
             f"Endpoint {item} is not supported or is not implemented yet."
         )
