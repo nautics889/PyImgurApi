@@ -1,7 +1,10 @@
 import json
 import logging
+import urllib.error
 import urllib.request
 from urllib.parse import urljoin
+
+from ..exceptions import HTTP_CODES_ERRORS_MAP
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +30,7 @@ class BaseEndpoint:
             try:
                 serialized_data = json.dumps(data).encode("utf-8")
             except TypeError:
-                logger.error("")
+                logger.error(f"Invalid data passed: {data}")
                 raise
             request_object_params.update(data=serialized_data)
         elif isinstance(data, bytes):
@@ -46,7 +49,12 @@ class BaseEndpoint:
             for header, value in headers.items():
                 request.add_header(header, value)
 
-        response = urllib.request.urlopen(request)
+        try:
+            response = urllib.request.urlopen(request)
+        except urllib.error.HTTPError as e:
+            if e.code in HTTP_CODES_ERRORS_MAP:
+                raise HTTP_CODES_ERRORS_MAP[e.code](e.reason)
+            raise e
         raw_response_data = response.read()
         json_response_data = json.loads(raw_response_data.decode("utf-8"))
         return json_response_data
