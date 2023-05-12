@@ -53,7 +53,7 @@ class BaseEndpoint:
             response = urllib.request.urlopen(request)
         except urllib.error.HTTPError as e:
             if e.code in HTTP_CODES_ERRORS_MAP:
-                raise HTTP_CODES_ERRORS_MAP[e.code](e.reason)
+                raise HTTP_CODES_ERRORS_MAP[e.code](e.reason) from None
             raise e
         raw_response_data = response.read()
         json_response_data = json.loads(raw_response_data.decode("utf-8"))
