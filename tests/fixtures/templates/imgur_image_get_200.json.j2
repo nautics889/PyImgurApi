@@ -1,0 +1,65 @@
+{
+  "data": {
+    "id": "{{ id }}",
+    "title": "{{ title or 'Test image' }}",
+    "description": null,
+    "datetime": {{ datetime or range(1000000000, 1899999999) | random}},
+    "type": "image/jpeg",
+    "animated": false,
+    "width": {{ width or 1920 }},
+    "height": {{ height or 1080 }},
+    "size": {{ size or range(100000, 9999999) | random }},
+    "views": {{ views or range(1, 9999) | random }},
+    "bandwidth": {{ bandwidth or range(1000000, 9999999) | random }},
+    "vote": null,
+    "favorite": true,
+    "nsfw": false,
+    "section": null,
+    "account_url": null,
+    "account_id": {{ account_id or range(1000000, 99999999) | random }},
+    "is_ad": false,
+    "in_most_viral": false,
+    "has_sound": false,
+    "tags": [],
+    "ad_type": 0,
+    "ad_url": "",
+    "edited": "0",
+    "in_gallery": false,
+    "deletehash": "{{ delete_hash or 'abcdefghijklmno' }}",
+    "name": "{{ name or 'test_img.jpg' }}",
+    "link": "https://i.imgur.com/{{ id }}.jpg",
+    "ad_config": {
+      "safeFlags": [
+        "not_in_gallery",
+        "share"
+      ],
+      "highRiskFlags": [],
+      "unsafeFlags": [
+        "sixth_mod_unsafe",
+        "onsfw_mod_unsafe"
+      ],
+      "wallUnsafeFlags": [
+        "onsfw_mod_unsafe_wall"
+      ],
+      "showsAds": false,
+      "showAdLevel": 0,
+      "safe_flags": [
+        "not_in_gallery",
+        "share"
+      ],
+      "high_risk_flags": [],
+      "unsafe_flags": [
+        "sixth_mod_unsafe",
+        "onsfw_mod_unsafe"
+      ],
+      "wall_unsafe_flags": [
+        "onsfw_mod_unsafe_wall"
+      ],
+      "show_ads": false,
+      "show_ad_level": 0,
+      "nsfw_score": 1
+    }
+  },
+  "success": true,
+  "status": 200
+}
