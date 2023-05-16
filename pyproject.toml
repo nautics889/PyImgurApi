@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyimgurapi"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["nautics889 <cyberukr@gmail.com>"]
 readme = "README.md"

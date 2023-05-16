@@ -90,5 +90,20 @@ class Comment(BaseEndpoint):
 
         return self.make_request(url_path, headers=headers, method="POST")
 
+    def report(self, comment_id, reason):
+        possible_reasons = ("1", "2", "3", "4", "5")
+        if str(reason) not in possible_reasons:
+            raise ValueError(
+                f"Inappropriate value for `reason`: '{reason}', "
+                f"currently supported: {possible_reasons}"
+            )
+
+        url_path = f"/3/comment/{comment_id}/report"
+
+        headers = {"Content-Type": "application/json"}
+        headers.update(**self.get_auth_header())
+
+        return self.make_request(url_path, headers=headers, method="POST")
+
     def __call__(self, comment_id):
         return self.get_comment(comment_id)
