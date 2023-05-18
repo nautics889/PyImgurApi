@@ -75,15 +75,15 @@ class Comment(BaseEndpoint):
             url_path, data=data, headers=headers, method="POST"
         )
 
-    def vote(self, comment_id, vote_value="up"):
-        vote_values = ("up", "down", "veto")
-        if vote_value not in vote_values:
+    def vote(self, comment_id, vote="up"):
+        possible_vote_values = ("up", "down", "veto")
+        if vote not in possible_vote_values:
             raise ValueError(
-                f"Inappropriate value for `vote_value`: '{vote_value}', "
-                f"currently supported: {vote_values}"
+                f"Inappropriate value for `vote_value`: '{vote}', "
+                f"currently supported: {possible_vote_values}"
             )
 
-        url_path = f"/3/comment/{comment_id}/vote/{vote_value}"
+        url_path = f"/3/comment/{comment_id}/vote/{vote}"
 
         headers = {"Content-Type": "application/json"}
         headers.update(**self.get_auth_header())
@@ -91,11 +91,11 @@ class Comment(BaseEndpoint):
         return self.make_request(url_path, headers=headers, method="POST")
 
     def report(self, comment_id, reason):
-        possible_reasons = ("1", "2", "3", "4", "5")
-        if str(reason) not in possible_reasons:
+        possible_reason_values = ("1", "2", "3", "4", "5")
+        if str(reason) not in possible_reason_values:
             raise ValueError(
                 f"Inappropriate value for `reason`: '{reason}', "
-                f"currently supported: {possible_reasons}"
+                f"currently supported: {possible_reason_values}"
             )
 
         url_path = f"/3/comment/{comment_id}/report"
