@@ -23,17 +23,17 @@ class Image(BaseEndpoint):
         ]
         file_data = file_obj.read()
         file = File(name=filename, data=file_data, field_name="image")
-        file_form = MultipartForm(
+        form = MultipartForm(
             fields=fields,
             files=[
                 file,
             ],
         )
 
-        data = bytes(file_form)
+        data = bytes(form)
 
         headers = {
-            "Content-Type": file_form.get_content_type(),
+            "Content-Type": form.get_content_type(),
             "Content-length": str(len(data)),
         }
         headers.update(**self.get_auth_header())
@@ -60,13 +60,14 @@ class Image(BaseEndpoint):
             for field_name in ("title", "description", "album")
             if kwargs.get(field_name) is not None
         ]
-        file_form = MultipartForm(fields=fields)
+        form = MultipartForm(fields=fields)
 
-        data = bytes(file_form)
+        data = bytes(form) or None
 
-        headers = {
-            "Content-Type": "application/json",
-        }
+        headers = dict()
+        if data:
+            headers["Content-Type"] = form.get_content_type()
+            headers["Content-length"] = str(len(data))
         headers.update(**self.get_auth_header())
 
         return self.make_request(

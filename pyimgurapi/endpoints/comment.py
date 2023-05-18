@@ -20,12 +20,12 @@ class Comment(BaseEndpoint):
             Field(field_name="image_id", value=image_id),
             Field(field_name="comment", value=comment),
         ]
-        file_form = MultipartForm(fields=fields)
+        form = MultipartForm(fields=fields)
 
-        data = bytes(file_form)
+        data = bytes(form)
 
         headers = {
-            "Content-Type": file_form.get_content_type(),
+            "Content-Type": form.get_content_type(),
             "Content-length": str(len(data)),
         }
         headers.update(**self.get_auth_header())
@@ -61,12 +61,12 @@ class Comment(BaseEndpoint):
             Field(field_name="image_id", value=image_id),
             Field(field_name="comment", value=comment),
         ]
-        file_form = MultipartForm(fields=fields)
+        form = MultipartForm(fields=fields)
 
-        data = bytes(file_form)
+        data = bytes(form)
 
         headers = {
-            "Content-Type": file_form.get_content_type(),
+            "Content-Type": form.get_content_type(),
             "Content-length": str(len(data)),
         }
         headers.update(**self.get_auth_header())
@@ -90,9 +90,9 @@ class Comment(BaseEndpoint):
 
         return self.make_request(url_path, headers=headers, method="POST")
 
-    def report(self, comment_id, reason):
+    def report(self, comment_id, reason=None):
         possible_reason_values = ("1", "2", "3", "4", "5")
-        if str(reason) not in possible_reason_values:
+        if reason is not None and str(reason) not in possible_reason_values:
             raise ValueError(
                 f"Inappropriate value for `reason`: '{reason}', "
                 f"currently supported: {possible_reason_values}"
@@ -100,10 +100,22 @@ class Comment(BaseEndpoint):
 
         url_path = f"/3/comment/{comment_id}/report"
 
-        headers = {"Content-Type": "application/json"}
+        fields = []
+        if reason:
+            fields.append(Field(field_name="reason", value=reason))
+        form = MultipartForm(fields=fields)
+
+        data = bytes(form) or None
+
+        headers = dict()
+        if data:
+            headers["Content-Type"] = form.get_content_type()
+            headers["Content-length"] = str(len(data))
         headers.update(**self.get_auth_header())
 
-        return self.make_request(url_path, headers=headers, method="POST")
+        return self.make_request(
+            url_path, data=data, headers=headers, method="POST"
+        )
 
     def __call__(self, comment_id):
         return self.get_comment(comment_id)
