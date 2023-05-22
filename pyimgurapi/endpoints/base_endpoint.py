@@ -16,10 +16,18 @@ class BaseEndpoint:
         self.client_id = client_id
         self.access_token = access_token
 
-    def get_auth_header(self):
+    def get_headers(self, form=None):
+        headers = dict()
+
+        if form is not None and bytes(form):
+            headers["Content-Type"] = form.get_content_type()
+            headers["Content-length"] = str(len(bytes(form)))
+
         if self.access_token:
-            return {"Authorization": f"Bearer {self.access_token}"}
-        return {"Authorization": f"Client-ID {self.access_token}"}
+            headers["Authorization"] = f"Bearer {self.access_token}"
+        else:
+            headers["Authorization"] = f"Client-ID {self.access_token}"
+        return headers
 
     def make_request(self, url_path, data=None, headers=None, method="GET"):
         url = urljoin(self.base_url, url_path)
