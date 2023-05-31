@@ -1,11 +1,19 @@
 import logging
 import os.path
+import random
+import string
 
 from jinja2 import Environment, FileSystemLoader
 
 logger = logging.getLogger(__name__)
 
 FIXTURES_DIR = "tests/fixtures"
+
+
+def get_random_imgur_id():
+    return "".join(
+        random.choice(string.digits + string.ascii_letters) for _ in range(7)
+    )
 
 
 def load_data_from_file(filename):

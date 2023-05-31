@@ -4,7 +4,7 @@ import string
 
 import pytest
 
-from .utils import get_template, load_data_from_file
+from .utils import get_template, load_data_from_file, get_random_imgur_id
 
 
 class ResponseFixture:
@@ -23,14 +23,15 @@ class ResponseFixture:
 
 
 @pytest.fixture
+def imgur_common_200_response():
+    content = load_data_from_file("common_200_response.json").encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
 def imgur_image_get_200_response():
     template = get_template("imgur_image_get_200.json.j2")
-    content = template.render(
-        id="".join(
-            random.choice(string.digits + string.ascii_letters)
-            for _ in range(7)
-        )
-    ).encode("utf-8")
+    content = template.render(id=get_random_imgur_id()).encode("utf-8")
     return ResponseFixture(status=200, reason="OK", content=content)
 
 
@@ -50,3 +51,9 @@ def imgur_image_post_200_response():
 def general_json_dict():
     data = load_data_from_file("general_valid_json.json")
     return json.loads(data)
+
+
+@pytest.fixture
+def test_image():
+    with open("tests/fixtures/assets/cat1.jpg", "rb") as image:
+        return image.read()
