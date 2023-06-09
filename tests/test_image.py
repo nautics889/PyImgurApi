@@ -48,3 +48,47 @@ class TestImage:
         assert urlopen_mock.call_args[0][0].method == "DELETE"
         assert img_id in urlopen_mock.call_args[0][0].full_url
         assert isinstance(res, dict)
+
+    @patch("urllib.request.urlopen")
+    def test_update(
+        self,
+        urlopen_mock,
+        imgur_common_200_response,
+        title_fixture,
+        description_fixture,
+    ):
+        urlopen_mock.return_value = imgur_common_200_response
+        img_id = get_random_imgur_id()
+
+        image = Image()
+        res = image.update(
+            img_id, title=title_fixture, description=description_fixture
+        )
+
+        urlopen_mock.assert_called_once()
+        assert urlopen_mock.call_args[0][0].method == "POST"
+        assert img_id in urlopen_mock.call_args[0][0].full_url
+        assert (
+            title_fixture.encode("utf-8") in urlopen_mock.call_args[0][0].data
+        )
+        assert (
+            description_fixture.encode("utf-8")
+            in urlopen_mock.call_args[0][0].data
+        )
+        assert isinstance(res, dict)
+
+    @patch("urllib.request.urlopen")
+    def test_favorite(self, urlopen_mock, imgur_common_200_response):
+        urlopen_mock.return_value = imgur_common_200_response
+        img_id = get_random_imgur_id()
+
+        image = Image()
+        res = image.favorite(img_id)
+
+        urlopen_mock.assert_called_once()
+        assert urlopen_mock.call_args[0][0].method == "POST"
+        assert urlopen_mock.call_args[0][0].full_url.endswith(
+            f"{img_id}/favorite"
+        )
+        assert not urlopen_mock.call_args[0][0].data
+        assert isinstance(res, dict)

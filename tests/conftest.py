@@ -2,6 +2,7 @@ import json
 import random
 import string
 
+import faker
 import pytest
 
 from .utils import get_template, load_data_from_file, get_random_imgur_id
@@ -57,3 +58,15 @@ def general_json_dict():
 def test_image():
     with open("tests/fixtures/assets/cat1.jpg", "rb") as image:
         return image.read()
+
+
+@pytest.fixture
+def title_fixture():
+    fake = faker.Faker()
+    return " ".join(fake.words(2)).capitalize()
+
+
+@pytest.fixture
+def description_fixture():
+    fake = faker.Faker()
+    return fake.text()
