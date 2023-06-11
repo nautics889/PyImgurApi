@@ -2,6 +2,7 @@ import json
 import logging
 import urllib.error
 import urllib.request
+from sys import api_version
 from urllib.parse import urljoin
 
 from ..exceptions import HTTP_CODES_ERRORS_MAP
@@ -11,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class BaseEndpoint:
     base_url = "https://api.imgur.com/"
+    api_version = "3"
 
     def __init__(self, client_id=None, access_token=None):
         self.client_id = client_id

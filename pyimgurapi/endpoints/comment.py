@@ -4,14 +4,14 @@ from ..form_factories import get_comment_form, get_comment_report_form
 
 class Comment(BaseEndpoint):
     def get_comment(self, comment_id):
-        url_path = f"/3/comment/{comment_id}"
+        url_path = f"/{self.api_version}/comment/{comment_id}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers)
 
     def create(self, image_id, comment):
-        url_path = "/3/comment"
+        url_path = f"/{self.api_version}/comment"
 
         form = get_comment_form(image_id, comment)
 
@@ -22,21 +22,21 @@ class Comment(BaseEndpoint):
         )
 
     def delete(self, image_hash):
-        url_path = f"/3/image/{image_hash}"
+        url_path = f"/{self.api_version}/image/{image_hash}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers, method="DELETE")
 
     def replies(self, comment_id):
-        url_path = f"/3/comment/{comment_id}/replies"
+        url_path = f"/{self.api_version}/comment/{comment_id}/replies"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers)
 
     def create_reply(self, image_id, comment_id, comment):
-        url_path = f"/3/comment/{comment_id}"
+        url_path = f"/{self.api_version}/comment/{comment_id}"
 
         form = get_comment_form(image_id, comment)
 
@@ -54,14 +54,14 @@ class Comment(BaseEndpoint):
                 f"currently supported: {possible_vote_values}"
             )
 
-        url_path = f"/3/comment/{comment_id}/vote/{vote}"
+        url_path = f"/{self.api_version}/comment/{comment_id}/vote/{vote}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers, method="POST")
 
     def report(self, comment_id, reason=None):
-        url_path = f"/3/comment/{comment_id}/report"
+        url_path = f"/{self.api_version}/comment/{comment_id}/report"
 
         form = get_comment_report_form(reason)
 

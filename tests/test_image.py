@@ -32,7 +32,7 @@ class TestImage:
 
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
-        assert urlopen_mock.call_args[0][0].full_url.endswith("/3/upload")
+        assert urlopen_mock.call_args[0][0].full_url.endswith("/upload")
         assert test_image in urlopen_mock.call_args[0][0].data
         assert isinstance(res, dict)
 

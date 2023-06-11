@@ -4,7 +4,7 @@ from ..form_factories import get_image_form
 
 class Image(BaseEndpoint):
     def get_image(self, image_hash):
-        url_path = f"/3/image/{image_hash}"
+        url_path = f"/{self.api_version}/image/{image_hash}"
 
         headers = self.get_headers()
 
@@ -13,7 +13,7 @@ class Image(BaseEndpoint):
     def upload(
         self, file_obj, filename, title=None, description=None, album=None
     ):
-        url_path = "/3/upload"
+        url_path = f"/{self.api_version}/upload"
 
         form = get_image_form(
             file_obj,
@@ -30,14 +30,14 @@ class Image(BaseEndpoint):
         )
 
     def delete(self, image_hash):
-        url_path = f"/3/image/{image_hash}"
+        url_path = f"/{self.api_version}/image/{image_hash}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers, method="DELETE")
 
     def update(self, image_hash, title=None, description=None, album=None):
-        url_path = f"/3/image/{image_hash}"
+        url_path = f"/{self.api_version}/image/{image_hash}"
 
         form = get_image_form(
             title=title, description=description, album=album
@@ -50,7 +50,7 @@ class Image(BaseEndpoint):
         )
 
     def favorite(self, image_hash):
-        url_path = f"/3/image/{image_hash}/favorite"
+        url_path = f"/{self.api_version}/image/{image_hash}/favorite"
 
         headers = self.get_headers()
 

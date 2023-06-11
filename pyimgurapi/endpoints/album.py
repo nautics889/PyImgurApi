@@ -4,21 +4,21 @@ from ..form_factories import get_album_form
 
 class Album(BaseEndpoint):
     def get_album(self, album_hash):
-        url_path = f"/3/album/{album_hash}"
+        url_path = f"/{self.api_version}/album/{album_hash}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers)
 
     def album_images(self, album_hash):
-        url_path = f"/3/album/{album_hash}/images"
+        url_path = f"/{self.api_version}/album/{album_hash}/images"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers)
 
     def album_image(self, album_hash, image_hash):
-        url_path = f"/3/album/{album_hash}/image/{image_hash}"
+        url_path = f"/{self.api_version}/album/{album_hash}/image/{image_hash}"
 
         headers = self.get_headers()
 
@@ -34,7 +34,7 @@ class Album(BaseEndpoint):
         layout=None,
         cover=None,
     ):
-        url_path = "/3/album"
+        url_path = f"/{self.api_version}/album"
 
         form = get_album_form(
             image_ids=image_ids,
@@ -63,7 +63,7 @@ class Album(BaseEndpoint):
         layout=None,
         cover=None,
     ):
-        url_path = f"/3/album/{album_hash}"
+        url_path = f"/{self.api_version}/album/{album_hash}"
 
         form = get_album_form(
             image_ids=image_ids,
@@ -82,7 +82,7 @@ class Album(BaseEndpoint):
         )
 
     def delete(self, album_hash):
-        url_path = f"/3/album/{album_hash}"
+        url_path = f"/{self.api_version}/album/{album_hash}"
 
         headers = {
             "Content-Type": "application/json",
@@ -92,14 +92,14 @@ class Album(BaseEndpoint):
         return self.make_request(url_path, headers=headers, method="DELETE")
 
     def favorite(self, album_hash):
-        url_path = f"/3/album/{album_hash}/favorite"
+        url_path = f"/{self.api_version}/album/{album_hash}/favorite"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers, method="POST")
 
     def set_images(self, album_hash, image_ids=None, delete_hashes=None):
-        url_path = f"/3/album/{album_hash}"
+        url_path = f"/{self.api_version}/album/{album_hash}"
 
         form = get_album_form(image_ids=image_ids, delete_hashes=delete_hashes)
 
@@ -110,7 +110,7 @@ class Album(BaseEndpoint):
         )
 
     def add(self, album_hash, image_ids=None, delete_hashes=None):
-        url_path = f"/3/album/{album_hash}/add"
+        url_path = f"/{self.api_version}/album/{album_hash}/add"
 
         form = get_album_form(image_ids=image_ids, delete_hashes=delete_hashes)
 
@@ -121,7 +121,7 @@ class Album(BaseEndpoint):
         )
 
     def remove_images(self, album_hash, image_ids):
-        url_path = f"/3/album/{album_hash}/remove_images"
+        url_path = f"/{self.api_version}/album/{album_hash}/remove_images"
 
         form = get_album_form(image_ids=image_ids)
 

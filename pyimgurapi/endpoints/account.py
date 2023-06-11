@@ -23,14 +23,14 @@ class Account(BaseEndpoint):
         )
 
     def base(self, username="me"):
-        url_path = f"/3/account/{username}"
+        url_path = f"/{self.api_version}/account/{username}"
 
         headers = self.get_headers()
 
         return self.make_request(url_path, headers=headers)
 
     def gallery_favorites(self, username="me", page=None, favorite_sort=None):
-        url_path = f"/3/account/{username}/gallery_favorites"
+        url_path = f"/{self.api_version}/account/{username}/gallery_favorites"
 
         if page is not None:
             url_path = urljoin(f"{url_path}/", str(page))
