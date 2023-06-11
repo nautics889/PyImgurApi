@@ -2,7 +2,6 @@ import json
 import logging
 import urllib.error
 import urllib.request
-from sys import api_version
 from urllib.parse import urljoin
 
 from ..exceptions import HTTP_CODES_ERRORS_MAP
