@@ -1,6 +1,4 @@
 import json
-import random
-import string
 
 import faker
 import pytest
@@ -39,12 +37,23 @@ def imgur_image_get_200_response():
 @pytest.fixture
 def imgur_image_post_200_response():
     template = get_template("imgur_image_post_200.json.j2")
+    content = template.render(id=get_random_imgur_id()).encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
+def imgur_comment_get_200_response():
+    template = get_template("imgur_comment_get_200.json.j2")
     content = template.render(
-        id="".join(
-            random.choice(string.digits + string.ascii_letters)
-            for _ in range(7)
-        )
+        album_cover_id=get_random_imgur_id(), image_id=get_random_imgur_id()
     ).encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
+def imgur_comment_post_200_response():
+    template = get_template("imgur_comment_post_200.json.j2")
+    content = template.render().encode("utf-8")
     return ResponseFixture(status=200, reason="OK", content=content)
 
 

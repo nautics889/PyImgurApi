@@ -1,0 +1,23 @@
+{
+  "data": {
+    "album_cover": "{{ album_cover_id }}",
+    "author": "{{ username or 'tester' }}",
+    "author_id": {{ author_id or range(100000, 9999999) | random }},
+    "children": [],
+    "comment": "{{ lipsum(n=1, html=False, min=3, max=20) }}",
+    "datetime": {{ datetime or range(1000000000, 1899999999) | random}},
+    "deleted": false,
+    "downs": 0,
+    "has_admin_badge": false,
+    "id": {{ id or range(1000000, 9999999) | random }},
+    "image_id": "{{ image_id }}",
+    "on_album": true,
+    "parent_id": 0,
+    "platform": "iphone",
+    "points": 17,
+    "ups": 17,
+    "vote": null
+  },
+  "status": 200,
+  "success": true
+}
