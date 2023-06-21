@@ -6,7 +6,7 @@ from tests.utils import get_random_imgur_id
 
 class TestComment:
     @patch("urllib.request.urlopen")
-    def test_get_image(self, urlopen_mock, imgur_comment_get_200_response):
+    def test_get_comment(self, urlopen_mock, imgur_comment_get_200_response):
         urlopen_mock.return_value = imgur_comment_get_200_response
         comment_id = (
             imgur_comment_get_200_response.json().get("data", {}).get("id")
