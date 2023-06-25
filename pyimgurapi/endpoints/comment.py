@@ -21,8 +21,8 @@ class Comment(BaseEndpoint):
             url_path, data=bytes(form), headers=headers, method="POST"
         )
 
-    def delete(self, image_hash):
-        url_path = f"/{self.api_version}/image/{image_hash}"
+    def delete(self, comment_id):
+        url_path = f"/{self.api_version}/comment/{comment_id}"
 
         headers = self.get_headers()
 
