@@ -58,6 +58,25 @@ def imgur_comment_post_200_response():
 
 
 @pytest.fixture
+def imgur_comment_delete_200_response():
+    template = get_template("imgur_comment_delete_200.json.j2")
+    content = template.render().encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
+def imgur_replies_get_200_response():
+    fake = faker.Faker()
+    template = get_template("imgur_comment_replies_get.json.j2")
+    content = template.render(
+        album_cover=get_random_imgur_id(),
+        username=fake.user_name(),
+        image_id=get_random_imgur_id(),
+    ).encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
 def general_json_dict():
     data = load_data_from_file("general_valid_json.json")
     return json.loads(data)

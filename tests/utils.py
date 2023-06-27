@@ -16,6 +16,10 @@ def get_random_imgur_id():
     )
 
 
+def get_random_imgur_digit_id(a=1 * 10**6, b=9.99 * 10**9):
+    return str(random.randint(a, b))
+
+
 def load_data_from_file(filename):
     try:
         with open(os.path.join(FIXTURES_DIR, filename)) as fp:
