@@ -2,6 +2,9 @@ import io
 import mimetypes
 import uuid
 
+ENCODING = "utf-8"
+EOL = "\r\n"
+
 
 # @TODO: consider dataclasses
 class Field:
@@ -30,28 +33,25 @@ class MultipartForm:
         buffer = io.BytesIO()
 
         boundary_bytes = b"".join(
-            (b"--", self.boundary.encode("utf-8"), b"\r\n")
+            (b"--", self.boundary.encode(ENCODING), EOL.encode(ENCODING))
         )
 
         for field in self.fields:
             buffer.write(boundary_bytes)
-            buffer.write("Content-Disposition: form-data; ".encode("utf-8"))
-            buffer.write(f'name="{field.field_name}"\r\n'.encode("utf-8"))
-            buffer.write(b"\r\n")
-            buffer.write(field.value.encode("utf-8"))
-            buffer.write(b"\r\n")
+            buffer.write("Content-Disposition: form-data; ".encode(ENCODING))
+            buffer.write(f'name="{field.field_name}"{EOL}'.encode(ENCODING))
+            buffer.write(EOL.encode(ENCODING))
+            buffer.write(field.value.encode(ENCODING))
+            buffer.write(EOL.encode(ENCODING))
 
         for file in self.files:
             buffer.write(boundary_bytes)
-            buffer.write("Content-Disposition: form-data; ".encode("utf-8"))
-            buffer.write(
-                f'name="{file.field_name}"; filename="{file.name}"\r\n'.encode(
-                    "utf-8"
-                )
-            )
-            buffer.write(b"\r\n")
+            buffer.write("Content-Disposition: form-data; ".encode(ENCODING))
+            buffer.write(f'name="{file.field_name}"; '.encode(ENCODING))
+            buffer.write(f'filename="{file.name}"{EOL}'.encode(ENCODING))
+            buffer.write(EOL.encode(ENCODING))
             buffer.write(file.data)
-            buffer.write(b"\r\n")
+            buffer.write(EOL.encode(ENCODING))
             buffer.write(boundary_bytes)
 
         return buffer.getvalue()

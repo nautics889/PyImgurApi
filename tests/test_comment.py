@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from pyimgurapi.endpoints import Comment
+from pyimgurapi.utils import EOL
 from tests.utils import get_random_imgur_id, get_random_imgur_digit_id
 
 
@@ -39,10 +40,9 @@ class TestComment:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
         assert isinstance(res, dict)
-        assert image_id in urlopen_mock.call_args[0][0].data.decode("utf-8")
-        assert description_fixture in urlopen_mock.call_args[0][0].data.decode(
-            "utf-8"
-        )
+        passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
+        assert f"{EOL}{image_id}{EOL}" in passed_form_data
+        assert f"{EOL}{description_fixture}{EOL}" in passed_form_data
 
     @patch("urllib.request.urlopen")
     def test_delete_comment(
@@ -94,10 +94,9 @@ class TestComment:
         assert urlopen_mock.call_args[0][0].method == "POST"
         assert isinstance(res, dict)
         assert comment_id in urlopen_mock.call_args[0][0].full_url
-        assert image_id in urlopen_mock.call_args[0][0].data.decode("utf-8")
-        assert description_fixture in urlopen_mock.call_args[0][0].data.decode(
-            "utf-8"
-        )
+        passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
+        assert f"{EOL}{image_id}{EOL}" in passed_form_data
+        assert f"{EOL}{description_fixture}{EOL}" in passed_form_data
 
     @pytest.mark.parametrize("vote_value", ["up", "down", "veto"])
     @patch("urllib.request.urlopen")
@@ -143,6 +142,8 @@ class TestComment:
         assert urlopen_mock.call_args[0][0].method == "POST"
         assert isinstance(res, dict)
         assert comment_id in urlopen_mock.call_args[0][0].full_url
+        passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
+        assert f"{EOL}{reason}{EOL}" in passed_form_data
 
     @patch("urllib.request.urlopen")
     def test_report_unknown_reason(
