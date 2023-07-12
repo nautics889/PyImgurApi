@@ -1,4 +1,5 @@
 import io
+import json
 import mimetypes
 import uuid
 
@@ -58,3 +59,54 @@ class MultipartForm:
 
     def get_content_type(self):
         return f"multipart/form-data; boundary={self.boundary}"
+
+
+class DynamicResponseData:
+    def __init__(self, source_dict, name="data"):
+        self._source_dict = source_dict
+        self._name = name
+
+    def __getattr__(self, item):
+        if isinstance(self._source_dict, (list, tuple)):
+            raise AttributeError(
+                f"'{self._name}' object represents an array, use the "
+                f"subscript notation (`[]`)"
+            )
+
+        if item in self._source_dict:
+            value = self._source_dict[item]
+            if isinstance(value, (list, tuple, dict)):
+                return self.__class__(self._source_dict[item], name=item)
+            return value
+        raise AttributeError(
+            f"'{self._name}' object does not have '{item}' attribute"
+        )
+
+    def __getitem__(self, key):
+        try:
+            if isinstance(self._source_dict[key], (list, tuple, dict)):
+                return self.__class__(
+                    self._source_dict[key],
+                    name=f"'{key}' item of '{self._name}'",
+                )
+
+            return self._source_dict[key]
+        except IndexError as exc:
+            raise IndexError(
+                f"Unable to get item by index '{key}' of array '{self._name}'"
+            ) from exc
+        except AttributeError as exc:
+            raise AttributeError(
+                f"Unable to get item by key '{key}' of object '{self._name}'"
+            ) from exc
+
+    def __str__(self):
+        return json.dumps(self._source_dict, indent=2)
+
+    def __repr__(self):
+        obj = f"{self.__class__.__module__}.{self.__class__.__name__}"
+        attrs = f"name='{self._name}', content={json.dumps(self._source_dict)}"
+        return f"<{obj} object at {hex(id(self))} ({attrs})>"
+
+    def as_dict(self):
+        return self._source_dict

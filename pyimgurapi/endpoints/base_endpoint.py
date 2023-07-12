@@ -5,6 +5,7 @@ import urllib.request
 from urllib.parse import urljoin
 
 from ..exceptions import HTTP_CODES_ERRORS_MAP
+from ..utils import DynamicResponseData
 
 logger = logging.getLogger(__name__)
 
@@ -66,4 +67,9 @@ class BaseEndpoint:
             raise e
         raw_response_data = response.read()
         json_response_data = json.loads(raw_response_data.decode("utf-8"))
-        return json_response_data
+
+        logger.debug(
+            f"Response body:\n{json.dumps(json_response_data, indent=2)}"
+        )
+
+        return DynamicResponseData(json_response_data)

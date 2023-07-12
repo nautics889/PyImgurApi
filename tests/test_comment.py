@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from pyimgurapi.endpoints import Comment
-from pyimgurapi.utils import EOL
+from pyimgurapi.utils import EOL, DynamicResponseData
 from tests.utils import get_random_imgur_id, get_random_imgur_digit_id
 
 
@@ -21,8 +21,8 @@ class TestComment:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "GET"
         assert str(comment_id) in urlopen_mock.call_args[0][0].full_url
-        assert isinstance(res, dict)
-        assert res.get("data", {}).get("id") == comment_id
+        assert isinstance(res, DynamicResponseData)
+        assert res.data.id == comment_id
 
     @patch("urllib.request.urlopen")
     def test_post_comment(
@@ -39,7 +39,7 @@ class TestComment:
 
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
         passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
         assert f"{EOL}{image_id}{EOL}" in passed_form_data
         assert f"{EOL}{description_fixture}{EOL}" in passed_form_data
@@ -59,7 +59,7 @@ class TestComment:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "DELETE"
         assert str(comment_id) in urlopen_mock.call_args[0][0].full_url
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
 
     @patch("urllib.request.urlopen")
     def test_get_replies(self, urlopen_mock, imgur_replies_get_200_response):
@@ -74,7 +74,7 @@ class TestComment:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "GET"
         assert str(comment_id) in urlopen_mock.call_args[0][0].full_url
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
 
     @patch("urllib.request.urlopen")
     def test_create_reply(
@@ -92,7 +92,7 @@ class TestComment:
 
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
         assert comment_id in urlopen_mock.call_args[0][0].full_url
         passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
         assert f"{EOL}{image_id}{EOL}" in passed_form_data
@@ -109,7 +109,7 @@ class TestComment:
 
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
         assert comment_id in urlopen_mock.call_args[0][0].full_url
         assert vote_value in urlopen_mock.call_args[0][0].full_url
 
@@ -140,7 +140,7 @@ class TestComment:
 
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "POST"
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
         assert comment_id in urlopen_mock.call_args[0][0].full_url
         passed_form_data = urlopen_mock.call_args[0][0].data.decode("utf-8")
         assert f"{EOL}{reason}{EOL}" in passed_form_data

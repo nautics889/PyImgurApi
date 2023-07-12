@@ -18,14 +18,14 @@ class ImgurAPI:
         )
 
     def auth(self):
-        auth_response_data = self.account.generate_access_token(
+        auth_response = self.account.generate_access_token(
             refresh_token=self.refresh_token,
             client_id=self.client_id,
             client_secret=self.client_secret,
         )
-        token = auth_response_data.get("access_token")
+        token = auth_response.access_token
         self.access_token = token
-        return auth_response_data
+        return auth_response
 
     def __getattr__(self, item):
         if item in self.endpoints:

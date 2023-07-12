@@ -19,7 +19,7 @@ class TestBaseEndpoint:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "GET"
         assert urlopen_mock.call_args[0][0].full_url.endswith("/test/url")
-        assert res == imgur_image_get_200_response.json()
+        assert res.as_dict() == imgur_image_get_200_response.json()
 
     @patch("urllib.request.urlopen")
     def test_make_request_post_valid_dict_payload(
@@ -37,7 +37,7 @@ class TestBaseEndpoint:
         assert passed_request.method == "POST"
         assert passed_request.full_url.endswith("/test/url")
         assert json.loads(passed_request.data.decode()) == general_json_dict
-        assert res == imgur_image_post_200_response.json()
+        assert res.as_dict() == imgur_image_post_200_response.json()
 
     @patch("urllib.request.urlopen")
     def test_make_request_post_invalid_type_payload(

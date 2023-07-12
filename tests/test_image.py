@@ -1,6 +1,7 @@
 from unittest.mock import patch, Mock
 
 from pyimgurapi.endpoints import Image
+from pyimgurapi.utils import DynamicResponseData
 from tests.utils import get_random_imgur_id
 
 
@@ -16,8 +17,8 @@ class TestImage:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "GET"
         assert img_id in urlopen_mock.call_args[0][0].full_url
-        assert isinstance(res, dict)
-        assert res.get("data", {}).get("id") == img_id
+        assert isinstance(res, DynamicResponseData)
+        assert res.data.id == img_id
 
     @patch("urllib.request.urlopen")
     def test_upload(
@@ -34,7 +35,7 @@ class TestImage:
         assert urlopen_mock.call_args[0][0].method == "POST"
         assert urlopen_mock.call_args[0][0].full_url.endswith("/upload")
         assert test_image in urlopen_mock.call_args[0][0].data
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
 
     @patch("urllib.request.urlopen")
     def test_delete(self, urlopen_mock, imgur_common_200_response):
@@ -47,7 +48,7 @@ class TestImage:
         urlopen_mock.assert_called_once()
         assert urlopen_mock.call_args[0][0].method == "DELETE"
         assert img_id in urlopen_mock.call_args[0][0].full_url
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
 
     @patch("urllib.request.urlopen")
     def test_update(
@@ -75,7 +76,7 @@ class TestImage:
             description_fixture.encode("utf-8")
             in urlopen_mock.call_args[0][0].data
         )
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
 
     @patch("urllib.request.urlopen")
     def test_favorite(self, urlopen_mock, imgur_common_200_response):
@@ -91,4 +92,4 @@ class TestImage:
             f"{img_id}/favorite"
         )
         assert not urlopen_mock.call_args[0][0].data
-        assert isinstance(res, dict)
+        assert isinstance(res, DynamicResponseData)
