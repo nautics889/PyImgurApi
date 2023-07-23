@@ -1,5 +1,8 @@
 # PyImgurAPI
 
+[![PyPI](https://img.shields.io/pypi/v/pyimgurapi.svg)](https://pypi.org/project/pyimgurapi/)
+[![Python Version](https://img.shields.io/pypi/pyversions/pyimgurapi.svg)](https://pypi.org/project/pyimgurapi/)
+
 A Python SDK for the Imgur API.
 
 ## Overview
@@ -23,9 +26,7 @@ $ pip install pyimgurapi
 
 1. [Register your application](https://api.imgur.com/oauth2/addclient) to get `client_id` and `client_secret`.
 2. Open the next URL in a browser:
-```
-https://api.imgur.com/oauth2/authorize?client_id=<your_client_id>&response_type=token
-```
+`https://api.imgur.com/oauth2/authorize?client_id=<your_client_id>&response_type=token`
 _(replace `<your_client_id>` with the actual ID)_
 3. Allow authentication for a client.
 4. Copy the `refresh_token` value from the URL field.
