@@ -1,8 +1,14 @@
+import itertools
+
 from .endpoints import Account, Album, Comment, Image
 
 
 class ImgurAPI:
     """Representation of Imgur API"""
+    account: Account
+    album: Album
+    comment: Comment
+    image: Image
 
     def __init__(self, refresh_token=None, client_id=None, client_secret=None):
         """
@@ -78,3 +84,6 @@ class ImgurAPI:
         raise NotImplementedError(
             f"Endpoint {item} is not supported or is not implemented yet."
         )
+
+    def __dir__(self):
+        return itertools.chain(super().__dir__(), self.endpoints.keys())

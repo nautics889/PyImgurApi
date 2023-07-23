@@ -1,4 +1,5 @@
 import io
+import itertools
 import json
 import mimetypes
 import uuid
@@ -99,6 +100,9 @@ class DynamicResponseData:
             raise AttributeError(
                 f"Unable to get item by key '{key}' of object '{self._name}'"
             ) from exc
+
+    def __dir__(self):
+        return itertools.chain(super().__dir__(), self._source_dict.keys())
 
     def __str__(self):
         return json.dumps(self._source_dict, indent=2)
