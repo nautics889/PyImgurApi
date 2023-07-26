@@ -1,9 +1,15 @@
 [tool.poetry]
 name = "pyimgurapi"
-version = "0.4.2"
-description = ""
+version = "0.4.3"
+description = "A Python SDK for the Imgur API."
 authors = ["nautics889 <cyberukr@gmail.com>"]
+license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "pyimgurapi" }
+]
+repository = "https://github.com/nautics889/PyImgurApi"
+homepage = "https://github.com/nautics889/PyImgurApi"
 
 [tool.poetry.dependencies]
 python = "^3.7"
