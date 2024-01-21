@@ -9,7 +9,7 @@ A Python SDK for the Imgur API.
 
 The package is supposed to be in strict accordance with the [Imgur's documentation](https://apidocs.imgur.com/), i.e. description for any endpoint implemented in the SDK can also be found there.
 
-The package does not have any third-party dependencies; it requires only Python 3.7+.
+The package does not have any third-party dependencies; it requires only Python 3.8+.
 
 ### Alternatives:
 * [PyImgur](https://github.com/Damgaard/PyImgur) was originally an official client for Imgur, but it seems to be deprecated now.
