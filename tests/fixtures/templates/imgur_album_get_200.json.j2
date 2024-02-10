@@ -1,0 +1,55 @@
+{
+  "data": {
+    "id": "{{ id }}",
+    "title": "{{ title or 'Test album' }}",
+    "description": "lorem ipsum dolor sit amet",
+    "datetime": {{ datetime or range(1000000000, 1899999999) | random}},
+    "cover": null,
+    "cover_edited": null,
+    "cover_width": null,
+    "cover_height": null,
+    "account_url": null,
+    "account_id": {{ account_id or range(1000000, 99999999) | random }},
+    "privacy": "hidden",
+    "layout": "blog",
+    "views": 0,
+    "link": "https://imgur.com/a/{{ id }}",
+    "favorite": false,
+    "nsfw": false,
+    "section": null,
+    "images_count": 0,
+    "in_gallery": false,
+    "is_ad": false,
+    "include_album_ads": false,
+    "is_album": true,
+    "deletehash": "{{ delete_hash or 'abcdefghijklmno' }}",
+    "images": [],
+    "ad_config": {
+      "safeFlags": [
+        "not_in_gallery",
+        "share"
+      ],
+      "highRiskFlags": [],
+      "unsafeFlags": [
+        "updated_date"
+      ],
+      "wallUnsafeFlags": [],
+      "showsAds": false,
+      "showAdLevel": 1,
+      "safe_flags": [
+        "not_in_gallery",
+        "share"
+      ],
+      "high_risk_flags": [],
+      "unsafe_flags": [
+        "updated_date"
+      ],
+      "wall_unsafe_flags": [],
+      "show_ads": false,
+      "show_ad_level": 1,
+      "nsfw_score": 0
+    }
+  },
+  "success": true,
+  "status": 200
+}

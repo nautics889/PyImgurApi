@@ -42,6 +42,20 @@ def imgur_image_post_200_response():
 
 
 @pytest.fixture
+def imgur_album_get_200_response():
+    template = get_template("imgur_album_get_200.json.j2")
+    content = template.render(id=get_random_imgur_id()).encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
+def imgur_album_post_200_response():
+    template = get_template("imgur_album_post_200.json.j2")
+    content = template.render(id=get_random_imgur_id()).encode("utf-8")
+    return ResponseFixture(status=200, reason="OK", content=content)
+
+
+@pytest.fixture
 def imgur_comment_get_200_response():
     template = get_template("imgur_comment_get_200.json.j2")
     content = template.render(
